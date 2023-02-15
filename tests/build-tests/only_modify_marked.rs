@@ -1,6 +1,6 @@
 use detour_lib_impl::hook_module;
 
-#[hook_module]
+#[hook_module("some_lib.dll")]
 mod lua {
     pub fn left_alone(foo: i32) -> i32 {
         foo
