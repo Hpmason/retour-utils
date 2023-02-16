@@ -4,8 +4,7 @@ version = "0.1.0"
 authors = ["Mason Ginter <mason@dagint.com>"]
 license = "BSD-2-Clause"
 description = "A cross-platform detour library written in Rust"
-# After publishing to crates.io
-# documentation = "https://docs.rs/retour-utils"
+documentation = "https://docs.rs/retour-utils"
 homepage = "https://github.com/Hpmason/retour-utils"
 repository = "https://github.com/Hpmason/retour-utils"
 keywords = ["detour", "hook", "function", "api", "redirect", "macros"]
