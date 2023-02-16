@@ -13,7 +13,7 @@ mod lua {
 fn main() {
     use lua::*;
     // won't run, but will verify data types are kept consistent
-    assert_eq!(DATA1, 4 as usize);
-    assert_eq!(DATA2, 2 as usize);
-    assert_eq!(left_alone(0), 0 as i32);
+    let _: usize = DATA1;
+    let _: usize = DATA2;
+    let _: fn(i32) -> i32 = left_alone; 
 }
