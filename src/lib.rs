@@ -1,13 +1,13 @@
-
-
-
 pub mod error;
 
 use std::iter;
 
-pub use retour_utils_impl::hook_module;
 pub use error::Error;
-use windows::{Win32::{Foundation::HINSTANCE, System::LibraryLoader::GetModuleHandleW}, core::PCWSTR};
+pub use retour_utils_impl::hook_module;
+use windows::{
+    core::PCWSTR,
+    Win32::{Foundation::HINSTANCE, System::LibraryLoader::GetModuleHandleW},
+};
 
 type Result<T> = std::result::Result<T, error::Error>;
 
@@ -19,7 +19,7 @@ pub enum LookupData {
     Symbol {
         module: &'static str,
         symbol: &'static str,
-    }
+    },
 }
 
 impl LookupData {
@@ -40,14 +40,14 @@ impl LookupData {
     fn address_from_handle(&self, handle: HINSTANCE) -> Option<*const ()> {
         use std::ffi::CString;
 
-        use windows::{Win32::System::LibraryLoader::GetProcAddress, core::PCSTR};
+        use windows::{core::PCSTR, Win32::System::LibraryLoader::GetProcAddress};
 
         match self {
-            LookupData::Offset { offset, ..} => {
-                // On Windows, HINSTANCE is the start address of the library, 
-                //  so we just add the offset to get the address 
+            LookupData::Offset { offset, .. } => {
+                // On Windows, HINSTANCE is the start address of the library,
+                //  so we just add the offset to get the address
                 Some((handle.0 as usize + offset) as *const ())
-            },
+            }
             LookupData::Symbol { symbol, .. } => {
                 let c_symbol = CString::new(symbol.clone()).ok()?;
                 let wrapped_ptr = PCSTR::from_raw(c_symbol.as_ptr() as *const u8);
@@ -56,12 +56,15 @@ impl LookupData {
                 } else {
                     None
                 }
-            },
+            }
         }
-    } 
+    }
 }
 
-pub unsafe fn init_detour(lookup_data: LookupData, init_detour: fn(*const ()) -> retour::Result<()>) -> Result<()> {
+pub unsafe fn init_detour(
+    lookup_data: LookupData,
+    init_detour: fn(*const ()) -> retour::Result<()>,
+) -> Result<()> {
     let module = lookup_data.get_module().to_string();
     let module_w_ptr = module
         .encode_utf16()

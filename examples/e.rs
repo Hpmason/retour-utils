@@ -1,4 +1,4 @@
-use detour_lib_impl::hook_module;
+use retour_utils_impl::hook_module;
 
 #[hook_module("")]
 mod lua {
@@ -6,10 +6,10 @@ mod lua {
     fn hooky() -> i32 {
         0
     }
-    #[offset(0xBEEF)]
-    pub fn hooky(detour: StaticDetour<fn() -> i32>) -> i32 {
-        0
-    }
+    // #[offset(0xBEEF)]
+    // pub fn hooky(detour: StaticDetour<fn() -> i32>) -> i32 {
+    //     0
+    // }
 
     // pub fn left_alone(foo: i32) -> i32 {
     //     foo
@@ -21,8 +21,4 @@ mod lua {
 // needed for trybuild
 fn main() {
     use lua::*;
-    // won't run, but will verify data types are kept consistent
-    // assert_eq!(DATA1, 4 as usize);
-    // assert_eq!(DATA2, 2 as usize);
-    // assert_eq!(left_alone(0), 0 as i32);
 }

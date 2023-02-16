@@ -1,11 +1,9 @@
 use std::fmt::Display;
 
-
-
 #[derive(Debug)]
 pub enum Error {
     DetourError(retour::Error),
-    ModuleNotLoaded,   
+    ModuleNotLoaded,
 }
 
 impl From<retour::Error> for Error {
