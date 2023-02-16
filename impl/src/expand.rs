@@ -51,10 +51,12 @@ fn expand_detour_def(detour_func: &Function) -> Result<TokenStream, syn::Error> 
     let arg_names = detour_func.get_arg_names()?;
     let detour_krate = retour_crate();
     Ok(quote::quote_spanned!{detour_name.span()=>
+        #[allow(non_upper_case_globals)]
         #vis static #detour_name: ::#detour_krate::StaticDetour<#type_sig> = {
             #[inline(never)]
             #[allow(unused_unsafe)]
             #func_decl {
+                #[allow(unused_unsafe)]
                 (#detour_name.__detour())(#(#arg_names),*)
             }
             ::#detour_krate::StaticDetour::__new(__ffi_detour)
