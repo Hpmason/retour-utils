@@ -1,5 +1,5 @@
 [package]
-name = "detour-lib"
+name = "retour-utils"
 version = "0.1.0"
 edition = "2021"
 autotests = false
@@ -10,15 +10,11 @@ resolver = "2"
 name = "tests"
 path = "tests/progress.rs"
 
-# [[example]]
-# name = "messageboxw_detour"
-# crate-type = ["cdylib"]
-
 [dev-dependencies]
 trybuild = { version = "1.0", features = ["diff"] }
 
 [dependencies]
-detour-lib-impl = { path = "impl" }
+retour-utils-impl = { path = "impl" }
 retour = "0.1.0"
 
 [target."cfg(windows)".dependencies]

@@ -1,4 +1,4 @@
-use detour_lib_impl::hook_module;
+use retour_utils::hook_module;
 
 
 #[hook_module("foo.bar")]

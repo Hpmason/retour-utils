@@ -18,11 +18,11 @@ pub fn retour_crate() -> Ident {
 }
 
 pub fn parent_crate() -> Ident {
-    let found_crate = crate_name("detour-lib").expect("detour-lib is present in `Cargo.toml`");
+    let found_crate = crate_name("retour-utils").expect("detour-lib is present in `Cargo.toml`");
 
     match found_crate {
         FoundCrate::Itself => {
-            Ident::new("detour_lib", Span::call_site())
+            Ident::new("retour_utils", Span::call_site())
         },
         FoundCrate::Name(name) => {
             Ident::new(&name.replace("-", "_"), Span::call_site())

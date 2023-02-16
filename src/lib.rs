@@ -5,7 +5,7 @@ pub mod error;
 
 use std::iter;
 
-pub use detour_lib_impl;
+pub use retour_utils_impl::hook_module;
 pub use error::Error;
 use windows::{Win32::{Foundation::HINSTANCE, System::LibraryLoader::GetModuleHandleW}, core::PCWSTR};
 

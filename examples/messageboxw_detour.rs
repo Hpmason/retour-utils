@@ -7,7 +7,7 @@ use windows::Win32::UI::WindowsAndMessaging::{MessageBoxW, MB_OKCANCEL};
 use windows::w;
 use std::error::Error;
 use std::ffi::c_void;
-use detour_lib_impl::hook_module;
+use retour_utils_impl::hook_module;
 
 #[hook_module("user32.dll")]
 mod user32 {
