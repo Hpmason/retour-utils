@@ -9,8 +9,6 @@ pub use detour_lib_impl;
 pub use error::Error;
 use windows::{Win32::{Foundation::HINSTANCE, System::LibraryLoader::GetModuleHandleW}, core::PCWSTR};
 
-pub use retour;
-
 type Result<T> = std::result::Result<T, error::Error>;
 
 pub enum LookupData {
