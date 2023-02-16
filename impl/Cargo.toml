@@ -1,6 +1,10 @@
 [package]
 name = "retour-utils-impl"
 version = "0.1.0"
+license = "BSD-2-Clause"
+description = "Macro crate for `retour-utils`"
+repository = "https://github.com/Hpmason/retour-utils"
+keywords = ["detour", "hook", "function", "api", "redirect", "macros"]
 edition = "2021"
 
 [lib]
