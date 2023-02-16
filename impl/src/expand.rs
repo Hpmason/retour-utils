@@ -1,7 +1,7 @@
 use proc_macro2::TokenStream;
 use syn::{ItemMod, LitStr, Signature, Ident, spanned::Spanned};
 
-use crate::{types::{Module, Function}, crate_refs::{parent_crate, retour_crate}};
+use crate::{types::{Module, Function, fn_type_from_sig}, crate_refs::{parent_crate, retour_crate}};
 
 pub fn expand(mod_block: &ItemMod, attribute_meta: &LitStr) -> Result<TokenStream, syn::Error> {
     
@@ -39,23 +39,27 @@ fn expand_fns(fns: &Vec<&Function>) -> Vec<TokenStream> {
 
 fn expand_detour_def(detour_func: &Function) -> Result<TokenStream, syn::Error> {
     assert!(detour_func.is_detour_fn());
-    let type_sig = detour_func.get_type_sig();
-    let detour_name = detour_func.get_hook_name()
-        .expect("Only called on detour functions");
-    let vis = detour_func.get_hook_vis();
     
-    let func_decl = Signature {
+    
+    let detour = detour_func.detour.as_ref().unwrap();
+    let detour_name = &detour.detour_name;
+    
+    let target_fn_decl = Signature {
         ident: Ident::new("__ffi_detour", detour_func.original.sig.ident.span()),
+        unsafety: detour.unsafety.clone(),
+        abi: detour.abi.clone(),
         ..detour_func.original.sig.clone()
     };
+    let fn_type_sig = fn_type_from_sig(&target_fn_decl);
+    let vis = &detour.vis;
     let arg_names = detour_func.get_arg_names()?;
     let detour_krate = retour_crate();
     Ok(quote::quote_spanned!{detour_name.span()=>
         #[allow(non_upper_case_globals)]
-        #vis static #detour_name: ::#detour_krate::StaticDetour<#type_sig> = {
+        #vis static #detour_name: ::#detour_krate::StaticDetour<#fn_type_sig> = {
             #[inline(never)]
             #[allow(unused_unsafe)]
-            #func_decl {
+            #target_fn_decl {
                 #[allow(unused_unsafe)]
                 (#detour_name.__detour())(#(#arg_names),*)
             }

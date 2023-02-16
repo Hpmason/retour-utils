@@ -137,12 +137,6 @@ impl<'a> Function<'a> {
             ..self.original.clone()
         }
     }
-
-    pub fn get_hook_vis(&self) -> Option<&Visibility> {
-        self.detour
-            .as_ref()
-            .and_then(|detour| Some(&detour.vis))
-    }
 }
 
 pub fn fn_type_from_sig(sig: &Signature) -> TokenStream {
