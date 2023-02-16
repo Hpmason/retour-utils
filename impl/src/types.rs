@@ -1,7 +1,7 @@
 use std::ops::Deref;
 
 use proc_macro2::TokenStream;
-use syn::{Ident, ItemMod, ItemFn, Item, spanned::Spanned, LitStr, FnArg, Visibility, Attribute, Pat, Signature};
+use syn::{Ident, ItemMod, ItemFn, Item, spanned::Spanned, LitStr, FnArg, Attribute, Pat, Signature};
 
 use crate::parse::HookAttributeArgs;
 
@@ -89,6 +89,23 @@ impl<'a> Function<'a> {
             }
             else {
                 remaining_attrs.push(attr);
+            }
+        }
+        // Hook functions can't be unsafe
+        if let Some(hook) = &hook_data {
+            if let Some(unsafety) = func.sig.unsafety {
+                match hook.unsafety {
+                    Some(hook_unsafety) => {
+                        let mut detour_sig_err = syn::Error::new(unsafety.span, "Hook functions can't be unsafe!\nYou've already marked the target function as unsafe. \nIf that's what you want, you can remove this `unsafe`");
+                        detour_sig_err.combine(syn::Error::new(hook_unsafety.span(), "You marked the target function as unsafe here"));
+                        return Err(detour_sig_err)
+                    },
+                    None => {
+                        let mut detour_sig_err = syn::Error::new(unsafety.span, "Hook functions can't be unsafe!\nIf your target function is unsafe, add it in the #[hook] macro");
+                        detour_sig_err.combine(syn::Error::new(hook.detour_name.span(), "Try adding `unsafe` before the detour name"));
+                        return Err(detour_sig_err)
+                    },
+                }
             }
         }
         Ok(Self {
