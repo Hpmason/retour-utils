@@ -4,6 +4,10 @@ version = "0.1.0"
 edition = "2021"
 autotests = false
 
+[[example]]
+name = "messageboxw_detour"
+crate-type = ["cdylib"]
+
 [[test]]
 name = "tests"
 path = "tests/progress.rs"

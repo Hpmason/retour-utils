@@ -1,27 +1,17 @@
 mod expand;
 mod types;
+mod parse;
+mod crate_refs;
 
 use proc_macro::TokenStream;
-use syn::{parse_macro_input, AttributeArgs, ItemMod};
+use syn::{parse_macro_input, ItemMod, LitStr};
 
 #[proc_macro_attribute]
 pub fn hook_module(args: TokenStream, input: TokenStream) -> TokenStream {
-
     let ast = parse_macro_input!(input as ItemMod);
-    let args = parse_macro_input!(args as AttributeArgs);
+    let args = parse_macro_input!(args as LitStr);
     
-    if args.len() != 1 {
-        return syn::Error::new(
-                ast.mod_token.span, 
-                "#[hook_module] expects the name of the library module to hook into. Try: #[hook_module(\"<dll_name>\")]"
-            )
-            .into_compile_error()
-            .into()
-    }
-    // eprintln!("{ast:#?}");
-    // eprintln!("{args:#?}");
-    
-    let stream = expand::expand(&ast, &args.first().expect("Already checked size"))
+    let stream = expand::expand(&ast, &args)
         .unwrap_or_else(syn::Error::into_compile_error);
     stream.into()
 }

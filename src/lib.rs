@@ -6,8 +6,10 @@ pub mod error;
 use std::iter;
 
 pub use detour_lib_impl;
-use error::Error;
+pub use error::Error;
 use windows::{Win32::{Foundation::HINSTANCE, System::LibraryLoader::GetModuleHandleW}, core::PCWSTR};
+
+pub use retour;
 
 type Result<T> = std::result::Result<T, error::Error>;
 
@@ -61,7 +63,7 @@ impl LookupData {
     } 
 }
 
-pub fn init_detour_with_offset(lookup_data: LookupData, init_detour: fn(*const ()) -> retour::Result<()>) -> Result<()> {
+pub unsafe fn init_detour(lookup_data: LookupData, init_detour: fn(*const ()) -> retour::Result<()>) -> Result<()> {
     let module = lookup_data.get_module().to_string();
     let module_w_ptr = module
         .encode_utf16()
