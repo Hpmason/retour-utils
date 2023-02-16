@@ -1,7 +1,7 @@
 use std::ops::Deref;
 
 use proc_macro2::TokenStream;
-use syn::{Ident, ItemMod, ItemFn, Item, spanned::Spanned, LitStr, FnArg, Visibility, Attribute, Pat};
+use syn::{Ident, ItemMod, ItemFn, Item, spanned::Spanned, LitStr, FnArg, Visibility, Attribute, Pat, Signature};
 
 use crate::parse::HookAttributeArgs;
 
@@ -123,28 +123,6 @@ impl<'a> Function<'a> {
             .collect()
     }
 
-    pub fn get_type_sig(&self) -> TokenStream {
-        let input_types: Vec<TokenStream> = self.original.sig.inputs
-            .iter()
-            .map(|fn_arg| {
-                let FnArg::Typed(arg) = fn_arg else {
-                    return syn::Error::new(fn_arg.span(), "")
-                        .into_compile_error()
-                };
-                let ty = &arg.ty;
-                quote::quote_spanned!{ty.span()=>
-                    #ty
-                }
-            })
-            .collect();
-        let output_type = &self.original.sig.output;
-        let abi = &self.original.sig.abi;
-        let unsafety = &self.original.sig.unsafety;
-        quote::quote_spanned!(self.original.sig.span()=>
-            #unsafety #abi fn(#(#input_types),*) #output_type
-        )
-    }
-
     pub fn get_lookup_data_constructor(&self, library_name: &LitStr) -> Option<TokenStream> {
         self.detour
             .as_ref()
@@ -164,5 +142,28 @@ impl<'a> Function<'a> {
         self.detour
             .as_ref()
             .and_then(|detour| Some(&detour.vis))
+    }
+}
+
+pub fn fn_type_from_sig(sig: &Signature) -> TokenStream {
+    let input_types: Vec<TokenStream> = sig.inputs
+        .iter()
+        .map(|fn_arg| {
+            let FnArg::Typed(arg) = fn_arg else {
+                return syn::Error::new(fn_arg.span(), "")
+                    .into_compile_error()
+            };
+            let ty = &arg.ty;
+            quote::quote_spanned!{ty.span()=>
+                #ty
+            }
+        })
+        .collect();
+    let output_type = &sig.output;
+    let abi = &sig.abi;
+    let unsafety = &sig.unsafety;
+    
+    quote::quote_spanned!{sig.span()=>
+        #unsafety #abi fn(#(#input_types),*) #output_type
     }
 }

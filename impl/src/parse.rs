@@ -1,6 +1,6 @@
 use proc_macro2::TokenStream;
 use quote::ToTokens;
-use syn::{Ident, Token, LitInt, LitStr, parse::Parse, Visibility};
+use syn::{Ident, Token, LitInt, LitStr, parse::Parse, Visibility, token::Unsafe, Abi};
 
 use crate::crate_refs::parent_crate;
 
@@ -12,6 +12,8 @@ pub mod kw {
 
 pub struct HookAttributeArgs {
     pub vis: Visibility,
+    pub unsafety: Option<Unsafe>,
+    pub abi: Option<Abi>,
     pub detour_name: Ident,
     pub comma: Token![,],
     pub hook_info: HookArg,
@@ -21,6 +23,8 @@ impl Parse for HookAttributeArgs {
     fn parse(input: syn::parse::ParseStream) -> syn::Result<Self> {
         Ok(Self {
             vis: input.parse()?,
+            unsafety: input.parse()?,
+            abi: input.parse()?,
             detour_name: input.parse()?,
             comma: input.parse()?,
             hook_info: input.parse()?,
