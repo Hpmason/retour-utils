@@ -30,11 +30,6 @@ mod hooks {
         FastCallAbiHook.call()
     }
 
-    #[hook(extern "win64" Win64AbiHook, symbol = "Foo")]
-    fn win64_abi_hook() -> i32 {
-        Win64AbiHook.call()
-    }
-
     #[hook(extern "C" CAbiHook, symbol = "Foo")]
     fn c_abi_hook() -> i32 {
         CAbiHook.call()
@@ -51,6 +46,14 @@ mod hooks {
     //     ThisCallHook.call()
     // }
 
+}
+#[cfg(all(target_family = "windows", target_arch = "x86_64"))]
+#[hook_module("foo.bar")]
+mod win64 {
+    #[hook(extern "win64" Win64AbiHook, symbol = "Foo")]
+    fn win64_abi_hook() -> i32 {
+        Win64AbiHook.call()
+    }
 }
 
 fn main() {}
