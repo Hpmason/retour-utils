@@ -13,10 +13,10 @@ jobs:
             triple: i686-pc-windows-msvc
           - os: windows-latest
             triple: x86_64-pc-windows-msvc
-          - os: windows-latest
-            triple: i686-pc-windows-gnu
-          - os: windows-latest
-            triple: x86_64-pc-windows-gnu
+          # - os: windows-latest
+          #   triple: i686-pc-windows-gnu
+          # - os: windows-latest
+          #   triple: x86_64-pc-windows-gnu
           
           # - os: ubuntu-latest
           #   triple: x86_64-unknown-linux-gnu
