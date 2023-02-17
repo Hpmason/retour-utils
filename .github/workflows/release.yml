@@ -9,7 +9,7 @@ on:
         required: true
         type: choice
         options:
-          - impl
+          - retour-utils-impl
           - retour-utils
       version:
         description: Version to release
