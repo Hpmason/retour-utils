@@ -6,6 +6,7 @@ use crate::{types::{Module, Function, fn_type_from_sig}, crate_refs::{parent_cra
 pub fn expand(mod_block: &ItemMod, attribute_meta: &LitStr) -> Result<TokenStream, syn::Error> {
     
     let module = Module::from_syn(mod_block, attribute_meta)?;
+    let mod_vis = &module.original.vis;
     let mod_name = module.get_module_ident();
     let funcs: Vec<TokenStream> = expand_fns(&module.get_fns());
     let items = module.get_items();
@@ -15,7 +16,7 @@ pub fn expand(mod_block: &ItemMod, attribute_meta: &LitStr) -> Result<TokenStrea
     let library_name = module.library_name();
     let init_detours_fn = expand_init_detours_fn(library_name, &module.get_fns());
     Ok(quote::quote! {
-        mod #mod_name {
+        #mod_vis mod #mod_name {
             /// Name of the lirbary being hooked
             const MODULE_NAME: &str = #library_name;
             #init_detours_fn
