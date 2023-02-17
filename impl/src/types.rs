@@ -7,7 +7,7 @@ use crate::parse::HookAttributeArgs;
 
 
 pub struct Module<'a> {
-    original: &'a ItemMod,
+    pub original: &'a ItemMod,
     libary_module: &'a LitStr,
     functions: Vec<Function<'a>>,
     other_items: Vec<&'a Item>
