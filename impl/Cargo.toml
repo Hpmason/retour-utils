@@ -1,6 +1,6 @@
 [package]
 name = "retour-utils-impl"
-version = "0.1.0"
+version = "0.1.1"
 license = "BSD-2-Clause"
 description = "Macro crate for `retour-utils`"
 repository = "https://github.com/Hpmason/retour-utils"
