@@ -4,6 +4,13 @@ name: Open a release PR
 on:
   workflow_dispatch:
     inputs:
+      crate:
+        description: Crate to release
+        required: true
+        type: choice
+        options:
+          - impl
+          - retour-utils
       version:
         description: Version to release
         required: true
@@ -22,6 +29,8 @@ jobs:
 
       - name: Check semver
         uses: obi1kenobi/cargo-semver-checks-action@v1
+        with:
+          crate-name: ${{ inputs.crate }}
 
       - name: Install cargo-release
         uses: taiki-e/install-action@v1
@@ -32,4 +41,5 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           version: ${{ inputs.version }}
+          crate-name: ${{ inputs.crate }}
           pr-release-notes: true
