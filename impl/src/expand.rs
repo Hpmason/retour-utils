@@ -18,7 +18,7 @@ pub fn expand(mod_block: &ItemMod, attribute_meta: &LitStr) -> Result<TokenStrea
     Ok(quote::quote! {
         #mod_vis mod #mod_name {
             /// Name of the lirbary being hooked
-            const MODULE_NAME: &str = #library_name;
+            pub const MODULE_NAME: &str = #library_name;
             #init_detours_fn
             #(#items)*
             #(#funcs)*
