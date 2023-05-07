@@ -40,6 +40,22 @@ impl Detours {
             pub const MODULE_NAME: &str = #module_name;
         })
     }
+
+    pub fn generate_init_detours(&self) -> Item {
+        let krate_name = crate_refs::parent_crate();
+        let init_funcs: Vec<Item> = self.detours.iter()
+            .map(|func| {
+                func.generate_detour_init(&self.module_name)
+            })
+            .collect();
+        Item::Verbatim(quote::quote!{
+            pub unsafe fn init_detours() -> Result<(), #krate_name::Error> {
+                #(#init_funcs;)*
+
+                Ok(())
+            }
+        })
+    }
 }
 
 
@@ -110,6 +126,25 @@ impl DetourInfo {
             }
         })
         .collect()
+    }
+
+    fn generate_detour_init(&self, module_name: &LitStr) -> Item {
+        let lookup_new_fn = (&self.hook_attr.hook_info).get_lookup_data_new_fn(module_name);
+        let detour_name = &self.hook_attr.detour_name;
+        let orig_func_name = &self.fn_sig.ident;
+        let parent_krate = crate_refs::parent_crate();
+        let detour_krate = crate_refs::retour_crate();
+        Item::Verbatim(quote_spanned!{self.hook_attr.span()=>
+            ::#parent_krate::init_detour(
+                #lookup_new_fn,
+                |addr| {
+                    #detour_name
+                        .initialize(::#detour_krate::Function::from_ptr(addr), #orig_func_name)?
+                        .enable()?;
+                    Ok(())
+                }
+            )?
+        })
     }
 }
 

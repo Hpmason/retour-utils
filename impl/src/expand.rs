@@ -14,7 +14,8 @@ pub fn expand(mod_block: ItemMod, attribute_meta: LitStr) -> Result<TokenStream,
     };
     content.push(detours.get_module_name_decl());
     let decls = detours.generate_detour_decls();
-    println!("{}", decls[0].to_token_stream().to_string());
     content.extend(decls);
+    content.push(detours.generate_init_detours());
+    
     Ok(result.to_token_stream())
 }
