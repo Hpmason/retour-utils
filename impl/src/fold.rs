@@ -1,12 +1,11 @@
 use proc_macro2::TokenStream;
-use quote::{format_ident, quote_spanned};
+use quote::quote_spanned;
 use syn::{
-    fold::Fold, token::Const, Expr, ExprLit, Generics, ItemConst, ItemFn,
-    LitStr, Signature, Token,
-    Visibility, spanned::Spanned, Item, FnArg, Pat,
+    fold::Fold, ItemFn,
+    LitStr, Signature, spanned::Spanned, Item, FnArg, Pat,
 };
 
-use crate::{parse::HookAttributeArgs, helpers::{str_type_from_span, fn_type}, crate_refs};
+use crate::{parse::HookAttributeArgs, helpers::{fn_type}, crate_refs};
 
 #[derive(Debug)]
 pub struct Detours {

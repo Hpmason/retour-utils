@@ -1,6 +1,6 @@
 use proc_macro2::TokenStream;
 use quote::ToTokens;
-use syn::{ItemMod, LitStr, fold::Fold, spanned::Spanned, Item};
+use syn::{ItemMod, LitStr, fold::Fold, spanned::Spanned};
 
 use crate::fold::Detours;
 
