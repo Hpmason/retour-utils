@@ -5,8 +5,11 @@ use std::iter;
 pub use error::Error;
 pub use retour_utils_impl::hook_module;
 use windows::{
-    core::PCWSTR,
-    Win32::{Foundation::HINSTANCE, System::LibraryLoader::GetModuleHandleW},
+    core::{PCSTR, PCWSTR},
+    Win32::{
+        Foundation::HMODULE,
+        System::LibraryLoader::{GetModuleHandleW, GetProcAddress},
+    },
 };
 
 type Result<T> = std::result::Result<T, error::Error>;
@@ -37,10 +40,8 @@ impl LookupData {
         }
     }
     #[cfg(windows)]
-    fn address_from_handle(&self, handle: HINSTANCE) -> Option<*const ()> {
+    fn address_from_handle(&self, handle: HMODULE) -> Option<*const ()> {
         use std::ffi::CString;
-
-        use windows::{core::PCSTR, Win32::System::LibraryLoader::GetProcAddress};
 
         match self {
             LookupData::Offset { offset, .. } => {

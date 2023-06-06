@@ -5,7 +5,7 @@ use retour_utils_impl::hook_module;
 use std::error::Error;
 use std::ffi::c_void;
 use windows::w;
-use windows::Win32::Foundation::{BOOL, HINSTANCE};
+use windows::Win32::Foundation::{BOOL, HMODULE};
 use windows::Win32::System::SystemServices::DLL_PROCESS_ATTACH;
 use windows::Win32::UI::WindowsAndMessaging::{MessageBoxW, MB_OKCANCEL};
 
@@ -39,7 +39,7 @@ fn main() -> Result<(), Box<dyn Error>> {
 #[no_mangle]
 #[allow(non_snake_case)]
 pub unsafe extern "system" fn DllMain(
-    _module: HINSTANCE,
+    _module: HMODULE,
     call_reason: u32,
     _reserved: *mut c_void,
 ) -> BOOL {
