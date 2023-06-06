@@ -23,12 +23,12 @@ trybuild = { version = "1.0", features = ["diff"] }
 
 [dependencies]
 retour-utils-impl = { path = "impl", version = "0.1.1" }
-retour = "0.1.0"
+retour = { version = "0.3.0", features = ["static-detour"] }
 
 [target."cfg(windows)".dependencies]
-windows = {version = "0.44", features = ["Win32_System_LibraryLoader", "Win32_Foundation"]}
+windows = {version = "0.48", features = ["Win32_System_LibraryLoader", "Win32_Foundation"]}
 [target."cfg(windows)".dev-dependencies]
-windows = {version = "0.44", features = ["Win32_System_LibraryLoader", "Win32_Foundation", "Win32_System_SystemServices", "Win32_UI_WindowsAndMessaging"]}
+windows = {version = "0.48", features = ["Win32_System_LibraryLoader", "Win32_Foundation", "Win32_System_SystemServices", "Win32_UI_WindowsAndMessaging"]}
 
 [workspace]
 members = ["impl"]
