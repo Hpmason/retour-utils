@@ -1,9 +1,8 @@
 use proc_macro2::TokenStream;
 use quote::ToTokens;
-use syn::{ItemMod, LitStr, fold::Fold, spanned::Spanned};
+use syn::{fold::Fold, spanned::Spanned, ItemMod, LitStr};
 
 use crate::fold::Detours;
-
 
 pub fn expand(mod_block: ItemMod, attribute_meta: LitStr) -> Result<TokenStream, syn::Error> {
     let mut detours = Detours::new(attribute_meta);
@@ -16,6 +15,6 @@ pub fn expand(mod_block: ItemMod, attribute_meta: LitStr) -> Result<TokenStream,
     let decls = detours.generate_detour_decls();
     content.extend(decls);
     content.push(detours.generate_init_detours());
-    
+
     Ok(result.to_token_stream())
 }

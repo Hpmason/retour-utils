@@ -1,5 +1,6 @@
-
-use syn::{Type, Signature, TypeBareFn, BareFnArg, FnArg, Pat, spanned::Spanned, punctuated::Punctuated};
+use syn::{
+    punctuated::Punctuated, spanned::Spanned, BareFnArg, FnArg, Pat, Signature, Type, TypeBareFn,
+};
 
 use crate::parse::HookAttributeArgs;
 
@@ -15,14 +16,14 @@ pub fn fn_type(fn_sig: &Signature, hook_info: &HookAttributeArgs) -> Type {
             }),
             FnArg::Receiver(_) => {
                 let err = syn::Error::new(
-                    arg.span(), 
-                    "`self` is not currently supported by this macro"
+                    arg.span(),
+                    "`self` is not currently supported by this macro",
                 );
                 match &mut errs {
                     Some(errs) => errs.combine(err),
                     None => errs = Some(err),
                 }
-            },
+            }
         }
     }
 
@@ -33,13 +34,11 @@ pub fn fn_type(fn_sig: &Signature, hook_info: &HookAttributeArgs) -> Type {
         fn_token: fn_sig.fn_token,
         paren_token: fn_sig.paren_token,
         inputs: args,
-        variadic: fn_sig.variadic.clone().map(|var| {
-            syn::BareVariadic { 
-                attrs: var.attrs, 
-                name: None, 
-                dots: var.dots, 
-                comma: var.comma 
-            }
+        variadic: fn_sig.variadic.clone().map(|var| syn::BareVariadic {
+            attrs: var.attrs,
+            name: None,
+            dots: var.dots,
+            comma: var.comma,
         }),
         output: fn_sig.output.clone(),
     })
@@ -53,20 +52,19 @@ pub fn fn_arg_names(fn_sig: &Signature) -> Result<Vec<&Pat>, syn::Error> {
             FnArg::Typed(arg) => args.push(arg.pat.as_ref()),
             FnArg::Receiver(_) => {
                 let err = syn::Error::new(
-                    arg.span(), 
-                    "`self` is not currently supported by this macro"
+                    arg.span(),
+                    "`self` is not currently supported by this macro",
                 );
                 match &mut errs {
                     Some(errs) => errs.combine(err),
                     None => errs = Some(err),
                 }
-            },
+            }
         }
     }
     if let Some(e) = errs {
         Err(e)
-    }
-    else {
+    } else {
         Ok(args)
     }
 }
@@ -76,25 +74,22 @@ pub fn fn_types(fn_sig: &Signature) -> Result<Vec<&Type>, syn::Error> {
     let mut errs: Option<syn::Error> = None;
     for arg in &fn_sig.inputs {
         match arg {
-            FnArg::Typed(arg) => {
-                types.push(arg.ty.as_ref())
-            },
+            FnArg::Typed(arg) => types.push(arg.ty.as_ref()),
             FnArg::Receiver(_) => {
                 let err = syn::Error::new(
-                    arg.span(), 
-                    "`self` is not currently supported by this macro"
+                    arg.span(),
+                    "`self` is not currently supported by this macro",
                 );
                 match &mut errs {
                     Some(errs) => errs.combine(err),
                     None => errs = Some(err),
                 }
-            },
+            }
         }
     }
     if let Some(e) = errs {
         Err(e)
-    }
-    else {
+    } else {
         Ok(types)
     }
 }

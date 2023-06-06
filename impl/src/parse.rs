@@ -1,6 +1,6 @@
 use proc_macro2::TokenStream;
 use quote::ToTokens;
-use syn::{Ident, Token, LitInt, LitStr, parse::Parse, Visibility, token::Unsafe, Abi};
+use syn::{parse::Parse, token::Unsafe, Abi, Ident, LitInt, LitStr, Token, Visibility};
 
 use crate::crate_refs::parent_crate;
 
@@ -51,7 +51,7 @@ pub enum HookArg {
         symbol_token: kw::symbol,
         eq: Token![=],
         value: LitStr,
-    }
+    },
 }
 
 impl HookArg {
@@ -59,17 +59,16 @@ impl HookArg {
         let krate_name = parent_crate();
         match self {
             Self::Offset { value, .. } => {
-                quote::quote!{
+                quote::quote! {
                     ::#krate_name::LookupData::from_offset(#module_name, #value)
                 }
-            },
+            }
             Self::Symbol { value, .. } => {
-                quote::quote!{
+                quote::quote! {
                     ::#krate_name::LookupData::from_symbol(#module_name, #value)
                 }
             }
         }
-        
     }
 }
 
@@ -77,20 +76,18 @@ impl Parse for HookArg {
     fn parse(input: syn::parse::ParseStream) -> syn::Result<Self> {
         let lookahead = input.lookahead1();
         if lookahead.peek(kw::offset) {
-            Ok(Self::Offset { 
-                offset_token: input.parse::<kw::offset>()?, 
-                eq: input.parse()?, 
+            Ok(Self::Offset {
+                offset_token: input.parse::<kw::offset>()?,
+                eq: input.parse()?,
                 value: input.parse()?,
             })
-        }
-        else if lookahead.peek(kw::symbol) {
-            Ok(Self::Symbol { 
-                symbol_token: input.parse::<kw::symbol>()?, 
-                eq: input.parse()?, 
+        } else if lookahead.peek(kw::symbol) {
+            Ok(Self::Symbol {
+                symbol_token: input.parse::<kw::symbol>()?,
+                eq: input.parse()?,
                 value: input.parse()?,
             })
-        }
-        else {
+        } else {
             Err(lookahead.error())
         }
     }
@@ -99,16 +96,24 @@ impl Parse for HookArg {
 impl ToTokens for HookArg {
     fn to_tokens(&self, tokens: &mut proc_macro2::TokenStream) {
         match self {
-            HookArg::Offset { offset_token, eq, value } => {
+            HookArg::Offset {
+                offset_token,
+                eq,
+                value,
+            } => {
                 offset_token.to_tokens(tokens);
                 eq.to_tokens(tokens);
                 value.to_tokens(tokens);
-            },
-            HookArg::Symbol { symbol_token, eq, value } => {
+            }
+            HookArg::Symbol {
+                symbol_token,
+                eq,
+                value,
+            } => {
                 symbol_token.to_tokens(tokens);
                 eq.to_tokens(tokens);
                 value.to_tokens(tokens);
-            },
+            }
         }
     }
 }
