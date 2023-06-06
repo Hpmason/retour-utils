@@ -11,7 +11,8 @@ use windows::Win32::UI::WindowsAndMessaging::{MessageBoxW, MB_OKCANCEL};
 
 #[hook_module("user32.dll")]
 mod user32 {
-    use windows::{core::PCWSTR, w, Win32::Foundation::HWND};
+    use windows::{Win32::Foundation::HWND, core::PCWSTR, w};
+
 
     #[hook(unsafe extern "system" MessageBoxWHook, symbol = "MessageBoxW")]
     fn messageboxw_detour(hwnd: HWND, text: PCWSTR, _caption: PCWSTR, u_type: u32) -> i32 {
