@@ -9,14 +9,10 @@ mod lua {
 
     #[hook(unsafe extern "C" Lua_newstate, symbol = "Lua_newstate")]
     pub fn newstate(f: *mut lua_Alloc, ud: *mut std::ffi::c_void) -> *mut lua_State {
-        unsafe {
-            Lua_newstate.call(f, ud)
-        }
+        unsafe { Lua_newstate.call(f, ud) }
     }
 }
 
 fn main() {
-    unsafe {
-        lua::init_detours().unwrap()
-    };
+    unsafe { lua::init_detours().unwrap() };
 }
