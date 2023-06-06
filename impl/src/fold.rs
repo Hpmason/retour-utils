@@ -2,10 +2,10 @@ use proc_macro2::TokenStream;
 use quote::quote_spanned;
 use syn::{
     fold::Fold, ItemFn,
-    LitStr, Signature, spanned::Spanned, Item, FnArg, Pat,
+    LitStr, Signature, spanned::Spanned, Item,
 };
 
-use crate::{parse::HookAttributeArgs, helpers::{fn_type}, crate_refs};
+use crate::{parse::HookAttributeArgs, helpers::{fn_type, fn_arg_names}, crate_refs};
 
 #[derive(Debug)]
 pub struct Detours {
@@ -36,6 +36,7 @@ impl Detours {
         let module_name = &self.module_name;
 
         Item::Verbatim(quote_spanned!{self.module_name.span()=>
+            #[allow(unused)]
             pub const MODULE_NAME: &str = #module_name;
         })
     }
@@ -70,10 +71,10 @@ impl DetourInfo {
         let vis = self.hook_attr.vis.clone();
         
         let detour_krate = crate_refs::retour_crate();
-        let detour_name = &self.hook_attr.detour_name;
+        let detour_name: &proc_macro2::Ident = &self.hook_attr.detour_name;
         let fn_type_sig = fn_type(&self.fn_sig, &self.hook_attr);
         let target_fn_decl = self.target_fn_decl();
-        let arg_names = self.get_arg_names().unwrap();
+        let arg_names = fn_arg_names(&self.fn_sig).unwrap();
 
         Item::Verbatim(quote_spanned!{self.hook_attr.span()=>
             #[allow(non_upper_case_globals)]
@@ -90,18 +91,8 @@ impl DetourInfo {
     }
 
     fn target_fn_decl(&self) -> TokenStream {
-        let input_types: Vec<TokenStream> = self.fn_sig.inputs
-            .iter()
-            .map(|fn_arg| {
-                let FnArg::Typed(arg) = fn_arg else {
-                    return syn::Error::new(fn_arg.span(), "A")
-                        .into_compile_error()
-                };
-                quote::quote_spanned!{arg.span()=>
-                    #arg
-                }
-            })
-        .collect();
+        let input_types = self.fn_sig.inputs.iter();
+        // output includes the `->` in the return type
         let output_type = &self.fn_sig.output;
         let abi = &self.hook_attr.abi;
         let unsafety = &self.hook_attr.unsafety;
@@ -109,22 +100,6 @@ impl DetourInfo {
         quote::quote_spanned!{self.hook_attr.span()=>
             #unsafety #abi fn __ffi_detour(#(#input_types),*) #output_type
         }
-    }
-
-    fn get_arg_names(&self) -> Result<Vec<&Pat>, syn::Error> {
-        self.fn_sig.inputs
-        .iter()
-        .map(|arg| {
-            let FnArg::Typed(arg) = arg else {
-                return Err(syn::Error::new(arg.span(), "jkhgakdfjhg"));
-            };
-            match *arg.pat {
-                syn::Pat::Ident(_) => Ok(&*arg.pat),
-                syn::Pat::Path(_) => Ok(&*arg.pat),
-                _ => Err(syn::Error::new(arg.pat.span(), "Function argument is not a supported pattern")),
-            }
-        })
-        .collect()
     }
 
     fn generate_detour_init(&self, module_name: &LitStr) -> Item {
