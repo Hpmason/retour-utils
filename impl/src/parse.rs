@@ -10,7 +10,6 @@ pub mod kw {
     syn::custom_keyword!(symbol);
 }
 
-#[derive(Debug)]
 pub struct HookAttributeArgs {
     pub vis: Visibility,
     pub unsafety: Option<Unsafe>,
@@ -40,7 +39,7 @@ impl ToTokens for HookAttributeArgs {
         self.hook_info.to_tokens(tokens);
     }
 }
-#[derive(Debug)]
+
 pub enum HookArg {
     Offset {
         offset_token: kw::offset,

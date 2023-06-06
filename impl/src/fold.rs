@@ -8,7 +8,6 @@ use crate::{
     parse::HookAttributeArgs,
 };
 
-#[derive(Debug)]
 pub struct Detours {
     module_name: LitStr,
     detours: Vec<DetourInfo>,
@@ -59,7 +58,6 @@ impl Detours {
     }
 }
 
-#[derive(Debug)]
 pub struct DetourInfo {
     pub hook_attr: HookAttributeArgs,
     pub fn_sig: Signature,
