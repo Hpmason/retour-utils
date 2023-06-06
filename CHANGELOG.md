@@ -5,16 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## Unreleased
+## 0.2.0 (2023-06-06)
 
 ### Commit Statistics
 
 <csr-read-only-do-not-edit/>
 
- - 1 commit contributed to the release.
+ - 3 commits contributed to the release.
  - 109 days passed between releases.
  - 0 commits were understood as [conventional](https://www.conventionalcommits.org).
- - 1 unique issue was worked on: [#9](https://github.com/Hpmason/retour-utils/issues/9)
+ - 2 unique issues were worked on: [#10](https://github.com/Hpmason/retour-utils/issues/10), [#9](https://github.com/Hpmason/retour-utils/issues/9)
 
 ### Commit Details
 
@@ -22,8 +22,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 <details><summary>view details</summary>
 
+ * **[#10](https://github.com/Hpmason/retour-utils/issues/10)**
+    - Update deps ([`b427617`](https://github.com/Hpmason/retour-utils/commit/b42761778a2f583e570da3dcac1f459d0a908fe5))
  * **[#9](https://github.com/Hpmason/retour-utils/issues/9)**
     - Use fold instead of manually traversing module ([`ddd18a4`](https://github.com/Hpmason/retour-utils/commit/ddd18a4f61eb2e1d9f977d8a0844a3ac683f796a))
+ * **Uncategorized**
+    - Merge branch 'master' of https://github.com/Hpmason/retour-utils ([`577795a`](https://github.com/Hpmason/retour-utils/commit/577795a80b7c355c4c4b5864b59433076be89893))
 </details>
 
 ## v0.1.1 (2023-02-17)

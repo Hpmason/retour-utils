@@ -5,13 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## Unreleased
+## 0.2.0 (2023-06-06)
 
 ### Commit Statistics
 
 <csr-read-only-do-not-edit/>
 
- - 2 commits contributed to the release over the course of 108 calendar days.
+ - 3 commits contributed to the release over the course of 108 calendar days.
  - 109 days passed between releases.
  - 0 commits were understood as [conventional](https://www.conventionalcommits.org).
  - 2 unique issues were worked on: [#8](https://github.com/Hpmason/retour-utils/issues/8), [#9](https://github.com/Hpmason/retour-utils/issues/9)
@@ -26,6 +26,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     - Make MODULE_NAME public ([`2475ff3`](https://github.com/Hpmason/retour-utils/commit/2475ff3dda1d75755e20d67c53e3f3c2f1dfaaf7))
  * **[#9](https://github.com/Hpmason/retour-utils/issues/9)**
     - Use fold instead of manually traversing module ([`ddd18a4`](https://github.com/Hpmason/retour-utils/commit/ddd18a4f61eb2e1d9f977d8a0844a3ac683f796a))
+ * **Uncategorized**
+    - Add changelogs from cargo-changelog ([`e53f8c1`](https://github.com/Hpmason/retour-utils/commit/e53f8c125b8fb4e6178a07989ef341b7c8961257))
 </details>
 
 ## v0.1.1 (2023-02-17)
