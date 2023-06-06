@@ -103,7 +103,7 @@ impl DetourInfo {
     }
 
     fn generate_detour_init(&self, module_name: &LitStr) -> Item {
-        let lookup_new_fn = (&self.hook_attr.hook_info).get_lookup_data_new_fn(module_name);
+        let lookup_new_fn = (self.hook_attr.hook_info).get_lookup_data_new_fn(module_name);
         let detour_name = &self.hook_attr.detour_name;
         let orig_func_name = &self.fn_sig.ident;
         let parent_krate = crate_refs::parent_crate();

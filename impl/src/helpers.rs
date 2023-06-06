@@ -45,7 +45,7 @@ pub fn fn_type(fn_sig: &Signature, hook_info: &HookAttributeArgs) -> Type {
     })
 }
 
-pub fn fn_arg_names<'a>(fn_sig: &'a Signature) -> Result<Vec<&'a Pat>, syn::Error> {
+pub fn fn_arg_names(fn_sig: &Signature) -> Result<Vec<&Pat>, syn::Error> {
     let mut args = Vec::new();
     let mut errs: Option<syn::Error> = None;
     for arg in &fn_sig.inputs {
@@ -71,7 +71,7 @@ pub fn fn_arg_names<'a>(fn_sig: &'a Signature) -> Result<Vec<&'a Pat>, syn::Erro
     }
 }
 
-pub fn fn_types<'a>(fn_sig: &'a Signature) -> Result<Vec<&'a Type>, syn::Error> {
+pub fn fn_types(fn_sig: &Signature) -> Result<Vec<&Type>, syn::Error> {
     let mut types = Vec::new();
     let mut errs: Option<syn::Error> = None;
     for arg in &fn_sig.inputs {

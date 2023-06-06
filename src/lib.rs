@@ -49,13 +49,9 @@ impl LookupData {
                 Some((handle.0 as usize + offset) as *const ())
             }
             LookupData::Symbol { symbol, .. } => {
-                let c_symbol = CString::new(symbol.clone()).ok()?;
+                let c_symbol = CString::new(*symbol).ok()?;
                 let wrapped_ptr = PCSTR::from_raw(c_symbol.as_ptr() as *const u8);
-                if let Some(func_ptr) = unsafe { GetProcAddress(handle, wrapped_ptr) } {
-                    Some(func_ptr as *const ())
-                } else {
-                    None
-                }
+                unsafe { GetProcAddress(handle, wrapped_ptr) }.map(|func_ptr| func_ptr as *const ())
             }
         }
     }

@@ -29,7 +29,7 @@ pub fn parent_crate() -> Ident {
             Ident::new("retour_utils", Span::call_site())
         },
         FoundCrate::Name(name) => {
-            Ident::new(&name.replace("-", "_"), Span::call_site())
+            Ident::new(&name.replace('-', "_"), Span::call_site())
         }
     }
 }
