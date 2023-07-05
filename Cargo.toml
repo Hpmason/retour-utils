@@ -35,4 +35,5 @@ members = ["impl"]
 
 [package.metadata.docs.rs]
 # Only builds on Windows
+default-target = "x86_64-pc-windows-msvc"
 targets = ["x86_64-pc-windows-msvc"]
