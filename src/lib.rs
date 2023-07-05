@@ -10,15 +10,15 @@ pub use error::Error;
 /// 
 /// # `#[hook] syntax
 /// Hook based off symbol
-/// ```
+/// ```ignore
 /// #[hook(<unsafe> <extern> <ABI> DETOUR_NAME, symbol = "SYMBOL_NAME")]
 /// ```
 /// Hook based off offset
-/// ```
+/// ```ignore
 /// #[hook(<unsafe> <extern> <ABI> DETOUR_NAME, offset = 0xDEAD_BEEF)]
 /// ```
 /// Examples:
-/// ```
+/// ```ignore
 /// #[hook(unsafe extern "system" MessageBoxA_Detour, symbol = "MessageBoxA")]
 /// fn messageboxw_detour(hwnd: HWND, text: PCWSTR, _caption: PCWSTR, u_type: u32) -> i32 { ... }
 /// 
@@ -31,7 +31,7 @@ pub use error::Error;
 /// 
 /// 
 /// # Example
-/// ```
+/// ```ignore
 /// use retour_utils::hook_module;
 ///
 /// #[hook_module("lua52.dll")]
