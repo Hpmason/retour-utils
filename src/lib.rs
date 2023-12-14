@@ -1,12 +1,9 @@
-pub mod error;
+mod error;
 
-use std::{
-    ffi::CString,
-    path::Path,
-};
+use std::{ffi::CString, path::Path};
 
 pub use error::Error;
-pub use minidl::*;
+use minidl::Library;
 /// Macro used to hook multiple `retour::StaticDetour`s at once
 ///
 /// Reads a `mod` block and generating static detours from #[hook] macros.
