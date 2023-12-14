@@ -1,5 +1,5 @@
 # retour-utils
-This crate is meant to help creating detours with the [retour crate](https://crates.io/crates/retour). If you're creating *lots* of detours, it's very repetitive, so this crate adds some a few helper functions and macro to greatly simplify/streamline the process. 
+This crate is meant to help creating detours with the [retour crate](https://crates.io/crates/retour). If you're creating *lots* of detours, it's very repetitive, so this crate adds some a few helper functions and macro to greatly simplify/streamline the process. It works on both Unix and Windows.
 
 
 
@@ -38,6 +38,5 @@ lua::init_hooks().unwrap()
 ```
 
 This is very much in the early stages, with some noticable rough areas
-- Only supports windows atm
 - No docs yet
 - Naming of macros and fns likely to change for consistency/clarity
